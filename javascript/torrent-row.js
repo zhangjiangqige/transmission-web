@@ -341,14 +341,18 @@ TorrentRendererCompact.prototype =
 				s += TorrentRendererHelper.formatUL(t);
 			return s;
 		}
-		if (t.isSeeding())
-			return [ Transmission.fmt.size(t.getTotalSize()),
-			         ', uploaded ',
-					 Transmission.fmt.size(t.getUploadedEver()),
-					 ', ratio: ',
+		if (t.isSeeding()) {
+			var trans = Transmission.prototype;
+			var domain = trans.getReadableDomain(trans.getDomainName(parseUri(t.getTrackers()[0].announce).host));
+			return [ domain, ', ',
+			         Transmission.fmt.size(t.getUploadedEver()),
+			         '/',
+			         Transmission.fmt.size(t.getTotalSize()),
+			         ', ratio: ',
 			         Transmission.fmt.ratioString(t.getUploadRatio()),
 			         ', ',
 			         TorrentRendererHelper.formatUL(t) ].join('');
+		}
 		return t.getStateString();
 	},
 
