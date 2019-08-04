@@ -342,7 +342,10 @@ TorrentRendererCompact.prototype =
 			return s;
 		}
 		if (t.isSeeding())
-			return [ 'Ratio: ',
+			return [ Transmission.fmt.size(t.getTotalSize()),
+			         ', uploaded ',
+					 Transmission.fmt.size(t.getUploadedEver()),
+					 ', ratio: ',
 			         Transmission.fmt.ratioString(t.getUploadRatio()),
 			         ', ',
 			         TorrentRendererHelper.formatUL(t) ].join('');
