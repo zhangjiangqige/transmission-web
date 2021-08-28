@@ -343,7 +343,10 @@ TorrentRendererCompact.prototype =
 		}
 		if (t.isSeeding()) {
 			var trans = Transmission.prototype;
-			var domain = trans.getReadableDomain(trans.getDomainName(parseUri(t.getTrackers()[0].announce).host));
+			var domain = "null";
+			if (t.getTrackers().length > 0) {
+				domain = trans.getReadableDomain(trans.getDomainName(parseUri(t.getTrackers()[0].announce).host));
+			}
 			return [ domain, ', ',
 			         Transmission.fmt.size(t.getUploadedEver()),
 			         '/',
