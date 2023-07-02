@@ -351,7 +351,21 @@ TorrentRendererCompact.prototype = {
             return s;
         };
         if (t.isSeeding()) {
-            return ['Ratio: ', Transmission.fmt.ratioString(t.getUploadRatio()), ', ', TorrentRendererHelper.formatUL(t)].join('');
+            var trans = Transmission.prototype;
+            var domain = "null";
+            if (t.getTrackers().length > 0) {
+                domain = trans.getReadableDomain(trans.getDomainName(parseUri(t.getTrackers()[0].announce).host));
+            }
+            return [
+                domain, ', ',
+                Transmission.fmt.size(t.getUploadedEver()),
+                '/',
+                Transmission.fmt.size(t.getTotalSize()),
+                ', ratio: ',
+                Transmission.fmt.ratioString(t.getUploadRatio()),
+                ', ',
+                TorrentRendererHelper.formatUL(t)
+            ].join('');
         };
         return t.getStateString();
     },
